@@ -1,33 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Retrieve favorites from local storage to initialize state
+// Load favorites from localStorage when the app starts
 const loadFavorites = () => {
-  const favorites = localStorage.getItem('favorites');
-  return favorites ? JSON.parse(favorites) : [];
+    const savedFavorites = localStorage.getItem('favorites');
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
 };
 
-export const favoritesSlice = createSlice({
-  name: 'favorites',
-  initialState: {
-    favorites: loadFavorites(),
-  },
-  reducers: {
-    addFavorite: (state, action) => {
-      const newFavorite = action.payload;
-      // Prevent adding duplicates
-      if (!state.favorites.some(fav => fav._id === newFavorite._id)) {
-        state.favorites.push(newFavorite);
-        localStorage.setItem('favorites', JSON.stringify(state.favorites));
-      }
-    },
-    removeFavorite: (state, action) => {
-      const idToRemove = action.payload;
-      state.favorites = state.favorites.filter(fav => fav._id !== idToRemove);
-      localStorage.setItem('favorites', JSON.stringify(state.favorites));
-    },
-  },
+const favoritesSlice = createSlice({
+    name: 'favorites',
+    initialState: loadFavorites(),
+    reducers: {
+        toggleFavorite: (state, action) => {
+            const restaurantId = action.payload;
+            let updatedFavorites;
+
+            if (state.includes(restaurantId)) {
+                // Remove from favorites
+                updatedFavorites = state.filter(id => id !== restaurantId);
+            } else {
+                // Add to favorites
+                updatedFavorites = [...state, restaurantId];
+            }
+
+            // ✅ Save updated favorites to localStorage
+            localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+
+            return updatedFavorites; // Return updated state
+        }
+    }
 });
 
-export const { addFavorite, removeFavorite } = favoritesSlice.actions;
+// Export actions
+export const { toggleFavorite } = favoritesSlice.actions;
 
+// Export reducer
 export default favoritesSlice.reducer;
