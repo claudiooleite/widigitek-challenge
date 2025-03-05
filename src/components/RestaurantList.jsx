@@ -1,32 +1,70 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 function RestaurantList() {
     const [restaurants, setRestaurants] = useState([]);
+    const [offset, setOffset] = useState(0);
+    const limit = 10;
+    const [hasMore, setHasMore] = useState(true);
+    const observer = useRef(null);
 
     useEffect(() => {
         const fetchRestaurants = async () => {
             try {
-                const response = await axios.get('https://api.wefood.dev/restaurants?limit=10');
-                setRestaurants(response.data.docs);
-                console.log(response.data.docs);
+                const response = await axios.get(`https://api.wefood.dev/restaurants?offset=${offset}&limit=${limit}`);
+                const newRestaurants = response.data.docs;
+
+                // Ensure no duplicate restaurants
+                setRestaurants(prev => {
+                    const uniqueRestaurants = new Map();
+                    [...prev, ...newRestaurants].forEach(item => {
+                        uniqueRestaurants.set(item._id, item);
+                    });
+                    return Array.from(uniqueRestaurants.values());
+                });
+
+                if (newRestaurants.length < limit) {
+                    setHasMore(false);
+                }
             } catch (error) {
                 console.error('Error fetching restaurants:', error);
             }
         };
 
         fetchRestaurants();
-    }, []);
+    }, [offset]);
+
+    useEffect(() => {
+        if (!hasMore) return;
+
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting) {
+                setOffset(prev => prev + limit);
+            }
+        });
+
+        const target = document.querySelector('#load-more-trigger');
+        if (target) observer.current.observe(target);
+
+        return () => observer.current && observer.current.disconnect();
+    }, [hasMore]);
 
     return (
-        <div>
+        <div style={{ maxWidth: '500px', margin: 'auto', textAlign: 'center' }}>
             <h1>Restaurants</h1>
             {restaurants.map(restaurant => (
-                <Link key={restaurant._id} to={`/restaurant/${restaurant._id}`} >
-                    <p>{restaurant.name}</p>
+                <Link key={restaurant._id} to={`/restaurant/${restaurant._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <div style={{ borderBottom: '1px solid #ddd', padding: '10px', cursor: 'pointer' }}>
+                        {restaurant.image?.url && (
+                            <img src={restaurant.image.url} alt={restaurant.name}
+                                style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '5px' }} />
+                        )}
+                        <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '10px 0' }}>{restaurant.name}</p>
+                    </div>
                 </Link>
             ))}
+            {hasMore && <div id="load-more-trigger" style={{ height: '20px' }}></div>}
         </div>
     );
 }
