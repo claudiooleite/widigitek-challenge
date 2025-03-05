@@ -1,35 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useParams } from 'react-router-dom'; // Import useParams to access URL params
 
-const RestaurantDetails = () => {
-    const { id } = useParams();
+function RestaurantDetails() {
     const [restaurant, setRestaurant] = useState(null);
+    const { id } = useParams(); // Get the restaurant ID from the URL
 
     useEffect(() => {
         const fetchRestaurantDetails = async () => {
-            const response = await axios.get(`https://api.wefood.dev/restaurants/${id}`);
-            setRestaurant(response.data);
+            try {
+                const response = await axios.get(`https://api.wefood.dev/restaurants/${id}`);
+                setRestaurant(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching restaurant details:', error);
+            }
         };
 
         fetchRestaurantDetails();
-    }, [id]);
+    }, [id]); // Dependency array includes id to refetch if it changes
 
     return (
         <div>
             {restaurant ? (
-                <>
-                    <img src={restaurant.image} alt={restaurant.name} />
+                <div>
                     <h1>{restaurant.name}</h1>
-                    <p>{restaurant.address}</p>
-                    <p>{restaurant.contacts}</p>
-                    <p>{restaurant.cuisines.join(', ')}</p>
-                </>
+                    <p>{restaurant.addressInfo.address}</p>
+                    <p>{restaurant.contacts.email}</p>
+                    <p>{restaurant.contacts.phoneNumber}</p>
+                </div>
             ) : (
                 <p>Loading...</p>
             )}
         </div>
     );
-};
+}
 
 export default RestaurantDetails;
