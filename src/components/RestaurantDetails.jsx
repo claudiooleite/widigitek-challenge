@@ -43,8 +43,8 @@ function RestaurantDetails() {
 
                     {/* Restaurant Image */}
                     <img src={restaurant.image?.url || FALLBACK_IMAGE}  alt={restaurant.name}
-                            className="w-full h-72 object-cover" />
-                            
+                            className="w-full h-72" />
+
                     {/* Content Section */}
                     <div className="p-6 text-center">
                         <h1 className="text-4xl font-bold text-main">{restaurant.name}</h1>
