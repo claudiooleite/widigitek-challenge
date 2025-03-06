@@ -1,5 +1,5 @@
 {
-  "name": "my-react-app",
+  "name": "widigitek-challenge",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,15 +14,17 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@reduxjs/toolkit": "^2.6.0",
-    "@tailwindcss/vite": "^4.0.9",
+    "@tailwindcss/vite": "^4.0.10",
     "axios": "^1.8.1",
     "framer-motion": "^12.4.10",
+    "postcss-cli": "^11.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.30.0",
+    "tailwindcss": "^4.0.10",
     "use-local-storage-state": "^19.5.0"
   },
   "devDependencies": {
@@ -36,7 +38,6 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
     "postcss": "^8.5.3",
-    "tailwindcss": "^4.0.9",
     "vite": "^6.2.0"
   }
 }

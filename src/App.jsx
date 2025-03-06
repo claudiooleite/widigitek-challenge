@@ -3,19 +3,20 @@ import RestaurantList from './components/RestaurantList';
 import RestaurantDetails from './components/RestaurantDetails';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import './App.css'
 
 function App() {
   return (
+
     <Router>
-      <Header/>
-      <div>
-        <Routes>
-          <Route path="/" element={<RestaurantList />} />
-          <Route path="/restaurant/:id" element={<RestaurantDetails />} />
-        </Routes>
-      </div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<RestaurantList />} />
+        <Route path="/restaurant/:id" element={<RestaurantDetails />} />
+      </Routes>
       <Footer />
     </Router>
+
   );
 }
 

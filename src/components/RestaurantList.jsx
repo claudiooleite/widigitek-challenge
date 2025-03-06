@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleFavorite } from '../store/slices/favoritesSlice'; 
+import { toggleFavorite } from '../store/slices/favoritesSlice';
 
 function RestaurantList() {
     const [restaurants, setRestaurants] = useState([]);
@@ -54,32 +54,34 @@ function RestaurantList() {
     }, [hasMore]);
 
     return (
-        <div style={{ maxWidth: '500px', margin: 'auto', textAlign: 'center' }}>
-            <h1>Restaurants</h1>
-            {restaurants.map(restaurant => (
-                <div key={restaurant._id} style={{ borderBottom: '1px solid #ddd', padding: '10px', cursor: 'pointer' }}>
-                    <Link to={`/restaurant/${restaurant._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        {restaurant.image?.url && (
-                            <img src={restaurant.image.url} alt={restaurant.name}
-                                style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '5px' }} />
-                        )}
-                        <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '10px 0' }}>{restaurant.name}</p>
-                    </Link>
+        <div>
+            <h1 className=''>Restaurants</h1>
+            <div className=''>
+                {restaurants.map(restaurant => (
+                    <div key={restaurant._id} style={{ borderBottom: '1px solid #ddd', padding: '10px', cursor: 'pointer' }}>
+                        <Link to={`/restaurant/${restaurant._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            {restaurant.image?.url && (
+                                <img src={restaurant.image.url} alt={restaurant.name}
+                                    style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '5px' }} />
+                            )}
+                            <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '10px 0' }}>{restaurant.name}</p>
+                        </Link>
 
-                    {/* Favorite Button */}
-                    <button
-                        onClick={() => dispatch(toggleFavorite(restaurant._id))}
-                        style={{
-                            background: favorites.includes(restaurant._id) ? 'gold' : 'gray',
-                            padding: '5px 10px',
-                            border: 'none',
-                            cursor: 'pointer'
-                        }}>
-                        {favorites.includes(restaurant._id) ? '★ Favorited' : '☆ Favorite'}
-                    </button>
-                </div>
-            ))}
-            {hasMore && <div id="load-more-trigger" style={{ height: '20px' }}></div>}
+                        {/* Favorite Button */}
+                        <button
+                            onClick={() => dispatch(toggleFavorite(restaurant._id))}
+                            style={{
+                                background: favorites.includes(restaurant._id) ? 'gold' : 'gray',
+                                padding: '5px 10px',
+                                border: 'none',
+                                cursor: 'pointer'
+                            }}>
+                            {favorites.includes(restaurant._id) ? '★ Favorited' : '☆ Favorite'}
+                        </button>
+                    </div>
+                ))}
+                {hasMore && <div id="load-more-trigger" style={{ height: '20px' }}></div>}
+            </div>
         </div>
     );
 }
