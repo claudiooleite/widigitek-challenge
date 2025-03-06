@@ -3,6 +3,10 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleFavorite } from '../store/slices/favoritesSlice';
+import '../App.css';
+
+// Fallback Image
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1485182708500-e8f1f318ba72?q=80&w=2710&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
 function RestaurantList() {
     const [restaurants, setRestaurants] = useState([]);
@@ -11,7 +15,7 @@ function RestaurantList() {
     const [hasMore, setHasMore] = useState(true);
     const observer = useRef(null);
     const dispatch = useDispatch();
-    const favorites = useSelector(state => state.favorites); // Correct selector
+    const favorites = useSelector(state => state.favorites);
 
     useEffect(() => {
         const fetchRestaurants = async () => {
@@ -54,34 +58,34 @@ function RestaurantList() {
     }, [hasMore]);
 
     return (
-        <div>
-            <h1 className=''>Restaurants</h1>
-            <div className=''>
+        <div className="max-w-5xl mx-auto mt-8">
+            <h1 className="text-3xl font-semibold text-main text-center mb-6">Restaurants</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {restaurants.map(restaurant => (
-                    <div key={restaurant._id} style={{ borderBottom: '1px solid #ddd', padding: '10px', cursor: 'pointer' }}>
-                        <Link to={`/restaurant/${restaurant._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                            {restaurant.image?.url && (
-                                <img src={restaurant.image.url} alt={restaurant.name}
-                                    style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '5px' }} />
-                            )}
-                            <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '10px 0' }}>{restaurant.name}</p>
-                        </Link>
-
-                        {/* Favorite Button */}
+                    <div key={restaurant._id} className="relative border border-secondary p-4 rounded-lg shadow-md transition transform hover:scale-105">
+                        {/* Favorite Button - Positioned on the top-right of the image */}
                         <button
                             onClick={() => dispatch(toggleFavorite(restaurant._id))}
-                            style={{
-                                background: favorites.includes(restaurant._id) ? 'gold' : 'gray',
-                                padding: '5px 10px',
-                                border: 'none',
-                                cursor: 'pointer'
-                            }}>
-                            {favorites.includes(restaurant._id) ? '★ Favorited' : '☆ Favorite'}
+                            className={`absolute top-2 right-2 p-2 rounded-full shadow-md transition ${
+                                favorites.includes(restaurant._id) ? 'bg-yellow-400 text-black' : 'bg-gray-300 text-gray-700'
+                            } hover:scale-110`}
+                        >
+                            {favorites.includes(restaurant._id) ? '★' : '☆'}
                         </button>
+
+                        <Link to={`/restaurant/${restaurant._id}`} className="block">
+                            {/* Use fallback image if no image is available */}
+                            <img 
+                                src={restaurant.image?.url || FALLBACK_IMAGE} 
+                                alt={restaurant.name} 
+                                className="w-full h-40 object-cover rounded-md bg-gray-100"
+                            />
+                            <p className="text-lg font-bold mt-2">{restaurant.name}</p>
+                        </Link>
                     </div>
                 ))}
-                {hasMore && <div id="load-more-trigger" style={{ height: '20px' }}></div>}
             </div>
+            {hasMore && <div id="load-more-trigger" className="h-20"></div>}
         </div>
     );
 }
