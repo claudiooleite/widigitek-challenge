@@ -76,7 +76,8 @@ function RestaurantList() {
             <div className="flex justify-center mb-6">
                 <button
                     onClick={() => setShowFavorites(prev => !prev)}
-                    className="px-6 py-2 text-lg font-semibold rounded-md transition bg-main hover:bg-blue-100 to-blue-300"
+                    className="px-6 py-6 text-lg font-semibold rounded-md transition bg-[#FFD180] hover:bg-[#ffd080ad] to-[#ffd080ad]"
+                    style={{padding: "6px 12px"}}
                 >
                     {showFavorites ? "Show All Restaurants ☆" : "Show Favorites ★"}
                 </button>
@@ -91,7 +92,7 @@ function RestaurantList() {
                             {/* 📌 Favorite Button - Positioned at the top-right of the image */}
                             <button
                                 onClick={() => dispatch(toggleFavorite(restaurant._id))}
-                                className={`absolute top-2 right-2 w-10 h-10 flex items-center justify-center rounded-full shadow-md transition ${favorites.includes(restaurant._id) ? 'bg-[#FFD180] text-black' : 'bg-gray-300 text-gray-700'
+                                className={`absolute top-2 right-2 w-10 h-10 flex items-center justify-center rounded-full shadow-md transition ${favorites.includes(restaurant._id) ? 'bg-[#FFD180] text-[#D84315]' : 'bg-gray-300 text-gray-700'
                                     } hover:scale-110`}
                             >
                                 <h1 className="text-xl">{favorites.includes(restaurant._id) ? '★' : '☆'}</h1>

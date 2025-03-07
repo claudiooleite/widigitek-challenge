@@ -41,7 +41,7 @@ function RestaurantDetails() {
                     {/* 📌 Favorite Button - Positioned at the top-right */}
                     <button
                         onClick={() => dispatch(toggleFavorite(restaurant._id))}
-                        className={`absolute top-2 right-2 w-10 h-10 flex items-center justify-center rounded-full shadow-md transition ${favorites.includes(restaurant._id) ? 'bg-yellow-400 text-black' : 'bg-gray-300 text-gray-700'
+                        className={`absolute top-2 right-2 w-10 h-10 flex items-center justify-center rounded-full shadow-md transition ${favorites.includes(restaurant._id) ? 'bg-yellow-400 text-text-[#D84315]' : 'bg-gray-300 text-gray-700'
                             } hover:scale-110`}
                     >
                         <h1 className="text-xl">{favorites.includes(restaurant._id) ? '★' : '☆'}</h1>
