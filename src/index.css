@@ -1,9 +1,8 @@
 /* Define CSS variables */
 :root {
   --primary-font: 'Poppins', sans-serif;
-  --main-color: #1440f7;
-  --secondary-color: #B6c1fc;
-  --background-color: #f9f9f9;     
+  --main-color: #D84315; 
+  --secondary-color: #FFD180;     
   --padding-mobile: 1rem;
   --padding-tablet: 2rem;
   --padding-desktop: 3rem;
@@ -11,7 +10,6 @@
 
 /* Reset default browser styles */
 * {
-  margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
